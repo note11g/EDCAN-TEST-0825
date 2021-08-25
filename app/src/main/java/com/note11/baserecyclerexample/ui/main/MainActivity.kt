@@ -27,8 +27,8 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main)
-        initActivity()
 
+        initActivity()
         getItems()
     }
 
@@ -72,7 +72,6 @@ object MainBindingConversion { //리사이클러뷰 필수!
     @BindingAdapter("bindItems")
     @JvmStatic
     fun bindItems(rcv: RecyclerView, list: List<TestModel>) {
-        Log.d("MainActivity", "binded!")
         (rcv.adapter as BaseRcv.Adapter<TestModel, ItemMainBinding>).run {
             submitList(list)
             notifyDataSetChanged()
