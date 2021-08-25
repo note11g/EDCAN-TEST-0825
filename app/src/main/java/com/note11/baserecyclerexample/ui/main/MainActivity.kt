@@ -38,9 +38,9 @@ class MainActivity : AppCompatActivity() {
 
         adapter = object : BaseRcv.Adapter<TestModel, ItemMainBinding>(
             itemSame = { old, new -> old.indexNumber == new.indexNumber },
-            layoutId = R.layout.item_main,
-            bindingID = BR.test,
-            onClick = { // 각 아이템들을 클릭했을 때
+            itemLayoutId = R.layout.item_main,
+            itemBindingID = BR.test,
+            onItemClick = {
                 Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
             }
         ) {}

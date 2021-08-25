@@ -12,22 +12,22 @@ import androidx.recyclerview.widget.RecyclerView
 abstract class BaseRcv {
     abstract class Adapter<I : Any, B : ViewDataBinding>(
         itemSame: (I, I) -> Boolean,
-        private val layoutId: Int,
-        private val bindingID: Int,
-        private val onClick: ((I) -> Unit)? = null
+        private val itemLayoutId: Int,
+        private val itemBindingID: Int,
+        private val onItemClick: ((I) -> Unit)? = null
     ) : ListAdapter<I, ViewHolder<I, B>>(DiffCallBack<I>(itemSame)) {
 
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder<I, B> {
             val binding: B = DataBindingUtil.inflate(
                 LayoutInflater.from(parent.context),
-                layoutId,
+                itemLayoutId,
                 parent,
                 false
             )
 
-            val viewHolder = object : ViewHolder<I, B>(binding, bindingID) {}
+            val viewHolder = object : ViewHolder<I, B>(binding, itemBindingID) {}
 
-            onClick?.let { f ->
+            onItemClick?.let { f ->
                 binding.root.setOnClickListener {
                     f(getItem(viewHolder.absoluteAdapterPosition))
                 }
