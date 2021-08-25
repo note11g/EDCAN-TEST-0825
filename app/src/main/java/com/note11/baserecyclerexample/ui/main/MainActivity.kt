@@ -21,7 +21,6 @@ import com.note11.baserecyclerexample.ui.base.BaseRcv
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private lateinit var adapter: BaseRcv.Adapter<TestModel, ItemMainBinding>
     val testList: ObservableArrayList<TestModel> = ObservableArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -36,14 +35,18 @@ class MainActivity : AppCompatActivity() {
         lifecycleOwner = this@MainActivity
         activity = this@MainActivity
 
-        adapter = object : BaseRcv.Adapter<TestModel, ItemMainBinding>(
-            itemSame = { old, new -> old.indexNumber == new.indexNumber },
-            itemLayoutId = R.layout.item_main,
-            itemBindingID = BR.test,
-            onItemClick = {
-                Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
-            }
-        ) {}
+        val adapter = TestAdapter{
+            //onClick
+        }
+
+//            object : BaseRcv.Adapter<TestModel, ItemMainBinding>(
+//                itemSame = { old, new -> old.indexNumber == new.indexNumber },
+//                itemLayoutId = R.layout.item_main,
+//                itemBindingID = BR.test,
+//                onItemClick = {
+//                    Toast.makeText(this@MainActivity, it.toString(), Toast.LENGTH_SHORT).show()
+//                }
+//            ) {}
 
         recyclerMain.layoutManager = LinearLayoutManager(this@MainActivity)
         recyclerMain.adapter = adapter
@@ -61,6 +64,7 @@ class MainActivity : AppCompatActivity() {
         TestRepository.downloadTest { q ->
             val getList = q.documents
             testList.clear()
+
             getList.map {
                 testList.add(TestModel(it["indexNumber"] as String, it["textString"] as String))
             }
@@ -72,7 +76,7 @@ object MainBindingConversion { //리사이클러뷰 필수!
     @BindingAdapter("bindItems")
     @JvmStatic
     fun bindItems(rcv: RecyclerView, list: List<TestModel>) {
-        (rcv.adapter as BaseRcv.Adapter<TestModel, ItemMainBinding>).run {
+        (rcv.adapter as TestAdapter).run {
             submitList(list)
             notifyDataSetChanged()
         }
